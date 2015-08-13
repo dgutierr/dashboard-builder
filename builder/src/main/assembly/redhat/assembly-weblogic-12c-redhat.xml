@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2012 JBoss Inc
+    Copyright (C) 2014 JBoss Inc
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
 
-  <id>weblogic12</id>
+  <id>weblogic12-redhat</id>
   <formats>
     <format>war</format>
   </formats>
@@ -31,5 +31,14 @@
   <componentDescriptors>
     <componentDescriptor>src/main/assembly/component-weblogic-12c-common.xml</componentDescriptor>
   </componentDescriptors>
+
+  <fileSets>
+    <fileSet>
+      <!-- Files specific to productized WAR-->
+      <directory>${project.basedir}/src/main/assembly/redhat/weblogic12c</directory>
+      <outputDirectory>.</outputDirectory>
+      <filtered>false</filtered>
+    </fileSet>
+  </fileSets>
 
 </assembly>

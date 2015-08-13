@@ -18,48 +18,62 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.jboss.dashboard-builder</groupId>
-        <artifactId>dashboard-builder</artifactId>
-        <version>6.4.0-SNAPSHOT</version>
-    </parent>
+  <parent>
+    <groupId>org.jboss.dashboard-builder</groupId>
+    <artifactId>dashboard-builder</artifactId>
+    <version>6.4.0-SNAPSHOT</version>
+  </parent>
 
-    <artifactId>modules</artifactId>
-    <packaging>pom</packaging>
-    <name>Dashboard Builder Modules</name>
-    <description>Dashboard builder's aggregation module</description>
+  <artifactId>modules</artifactId>
+  <packaging>pom</packaging>
+  <name>Dashboard Builder Modules</name>
+  <description>Dashboard builder's aggregation module</description>
 
-    <modules>
-        <module>dashboard-commons</module>
-        <module>dashboard-security</module>
-        <module>dashboard-providers</module>
-        <module>dashboard-displayers</module>
-        <module>dashboard-ui</module>
-        <module>dashboard-webapp</module>
-        <module>dashboard-samples</module>
-        <module>dashboard-showcase</module>
-    </modules>
+  <modules>
+    <module>dashboard-commons</module>
+    <module>dashboard-security</module>
+    <module>dashboard-providers</module>
+    <module>dashboard-displayers</module>
+    <module>dashboard-ui</module>
+    <module>dashboard-webapp</module>
+    <module>dashboard-samples</module>
+    <module>dashboard-showcase</module>
+  </modules>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <!--
-                         global configuration to achieve that web module compiled classes and resources
-                         will be archived in a .jar in the config.WEB-INF/lib directory instead of the
-                         config.WEB-INF/classes
-                    -->
-                    <archiveClasses>true</archiveClasses>
-                    <classesClassifier>classes</classesClassifier>
-                    <attachClasses>true</attachClasses>
-                    <packagingExcludes>WEB-INF/lib/*-classes.jar</packagingExcludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <!--
+               global configuration to achieve that web module compiled classes and resources
+               will be archived in a .jar in the config.WEB-INF/lib directory instead of the
+               config.WEB-INF/classes
+          -->
+          <archiveClasses>true</archiveClasses>
+          <classesClassifier>classes</classesClassifier>
+          <attachClasses>true</attachClasses>
+          <packagingExcludes>WEB-INF/lib/*-classes.jar</packagingExcludes>
+        </configuration>
+      </plugin>
+    </plugins>
 
+  </build>
+
+  <profiles>
+    <profile>
+      <id>productizedProfile</id>
+      <activation>
+        <property>
+          <name>productized</name>
+        </property>
+      </activation>
+      <modules>
+        <module>dashbuilder-redhat</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

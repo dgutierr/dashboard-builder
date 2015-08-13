@@ -17,9 +17,27 @@
     This module builds the distribution wars for different application servers and the standalone demo as well.
   </description>
 
+  <properties>
+    <!-- This property is overriden in 'productizedProfile' to specify the correct GAV for productized builds. -->
+    <webapp.war>org.jboss.dashboard-builder:dashboard-showcase:war</webapp.war>
+  </properties>
+
   <dependencyManagement>
 
     <dependencies>
+      <dependency>
+        <groupId>org.jboss.dashboard-builder</groupId>
+        <artifactId>dashboard-showcase</artifactId>
+        <type>war</type>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.dashboard-builder</groupId>
+        <artifactId>dashbuilder-redhat</artifactId>
+        <type>war</type>
+        <version>${project.version}</version>
+      </dependency>
+
       <!-- Required by the Weblogic assembly -->
       <dependency>
         <groupId>org.hibernate</groupId>
@@ -117,5 +135,59 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>productizedProfile</id>
+
+      <activation>
+        <property>
+          <name>productized</name>
+        </property>
+      </activation>
+
+      <properties>
+        <webapp.war>org.jboss.dashboard-builder:dashbuilder-redhat:war</webapp.war>
+      </properties>
+
+      <dependencies>
+        <dependency>
+          <groupId>org.jboss.dashboard-builder</groupId>
+          <artifactId>dashbuilder-redhat</artifactId>
+          <type>war</type>
+        </dependency>
+      </dependencies>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <finalName>dashbuilder-${project.version}</finalName>
+              <descriptors combine.children="override">
+                <descriptor>${project.basedir}/src/main/assembly/redhat/assembly-eap-6_4-redhat.xml</descriptor>
+                <descriptor>${project.basedir}/src/main/assembly/redhat/assembly-tomcat-7-redhat.xml</descriptor>
+                <descriptor>${project.basedir}/src/main/assembly/redhat/assembly-websphere-as-8-redhat.xml</descriptor>
+                <descriptor>${project.basedir}/src/main/assembly/redhat/assembly-weblogic-12c-redhat.xml</descriptor>
+              </descriptors>
+              <archive>
+                <addMavenDescriptor>false</addMavenDescriptor>
+              </archive>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+
+    </profile>
+  </profiles>
 
 </project>
